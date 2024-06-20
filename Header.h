@@ -11,7 +11,7 @@ char Lower_Letters[] = { 'a','b','c','d','e','f','g','h','i','j','k','l','m','n'
 char KUpper_Letters[] = { 'À', 'Á', 'Â', 'Ã', '¥', 'Ä', 'Å', 'ª', 'Æ', 'Ç', 'È', '²', '¯', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ð', 'Ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', '×', 'Ø', 'Ù', 'Ü', 'Þ', 'ß' };
 char KLower_Letters[] = { 'à', 'á', 'â', 'ã', '´', 'ä', 'å', 'º', 'æ', 'ç', 'è', '³', '¿', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ð', 'ñ', 'ò', 'ó', 'ô', 'õ', 'ö', '÷', 'ø', 'ù', 'ü', 'þ', 'ÿ' };
 char Numbers[] = { '0','1','2','3','4','5','6','7','8','9' };
-char huj[] = {
+char symbols[] = {
     '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '-', '=', '\\',
     '{', '}', '[', ']', '\'', '"', ';', ':', '|', ',', '.', '/', '<', '>', '?', '`', '~'
 };
@@ -38,9 +38,9 @@ void Encoder(std::vector<std::string>& password) {
                 ch = Numbers[(ptr - Numbers + 2) % 10];
                 continue;
             }
-            ptr = strchr(huj, ch);
+            ptr = strchr(symbols, ch);
             if (ptr) {
-                ch = huj[(ptr - huj + 2) % 32];
+                ch = symbols[(ptr - symbols + 2) % 32];
                 continue;
             }
             ptr = strchr(KUpper_Letters, ch);
@@ -79,9 +79,9 @@ void Decoder(std::vector<std::string>& password) {
                 ch = Numbers[(ptr - Numbers - 2 + 10) % 10];
                 continue;
             }
-            ptr = strchr(huj, ch);
+            ptr = strchr(symbols, ch);
             if (ptr) {
-                ch = huj[(ptr - huj - 2 + 32) % 32];
+                ch = symbols[(ptr - symbols - 2 + 32) % 32];
                 continue;
             }
             ptr = strchr(KUpper_Letters, ch);
@@ -163,4 +163,50 @@ std::vector<std::string> password_input(const std::string& filename) {
         std::cerr << "Error opening file for reading" << std::endl;
     }
     return text;
+}
+
+void display_menu() {
+    std::cout << "Password Manager Menu:" << std::endl;
+    std::cout << "1. Input passwords from file" << std::endl;
+    std::cout << "2. Encode passwords" << std::endl;
+    std::cout << "3. Decode passwords" << std::endl;
+    std::cout << "4. Save encoded passwords to file" << std::endl;
+    std::cout << "5. Read encoded passwords from file" << std::endl;
+    std::cout << "6. Display all of passwords" << std::endl;
+    std::cout << "7. Display password" << std::endl;
+    std::cout << "8. Exit" << std::endl;
+    std::cout << "Enter your choice: ";
+}
+
+void display_passwords(const std::vector<std::string>& passwords) {
+    for (size_t i = 0; i < passwords.size(); i++) {
+        std::cout << passwords[i] << std::endl;
+    }
+}
+
+void display_password(std::vector<std::string>& password, std::vector<std::string>& names) {
+    std::vector<std::string> decoded_names = names;
+    Decoder(decoded_names);
+    Decoder(password);
+    for (size_t i = 0; i < decoded_names.size(); i++) {
+        std::cout << std::to_string(i + 1) + ". " << decoded_names[i] << std::endl;
+    }
+    int choice;
+    std::cout << "Enter a number of the Name";
+    std::cin >> choice;
+    // Check for valid choice
+    if (choice < 1 || choice > static_cast<int>(decoded_names.size())) {
+        std::cerr << "Invalid choice. Please try again." << std::endl;
+        return;
+    }
+    std::string Name = decoded_names[choice-1];
+    for (size_t i = 0; i < password.size(); i++) {
+        if (Name == password[i]) {
+            std::cout << "Your data:" << std::endl << std::endl;
+            for (int j = 0; j < 3;j++) {
+                std::cout << password[i + j]<<std::endl;
+            }
+            break;
+        }
+    }
 }

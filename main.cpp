@@ -1,4 +1,3 @@
-#include <cmath>
 #include <fstream>
 #include <iostream>
 #include "Header.h"
@@ -7,26 +6,10 @@
 
 using namespace std; // Use the standard namespace for convenience
 
-std::vector<string> password; // Declare a global vector of strings named 'password'
+std::vector<string> password; // Declare a global vectors of strings
 std::vector<string> names;
 
-void display_menu() {
-    cout << "Password Manager Menu:" << endl;
-    cout << "1. Input passwords from file" << endl;
-    cout << "2. Encode passwords" << endl;
-    cout << "3. Decode passwords" << endl;
-    cout << "4. Save encoded passwords to file" << endl;
-    cout << "5. Read encoded passwords from file" << endl;
-    cout << "6. Display passwords" << endl;
-    cout << "7. Exit" << endl;
-    cout << "Enter your choice: ";
-}
 
-void display_passwords(const std::vector<std::string>& passwords) {
-    for (size_t i = 0; i < passwords.size(); ++i) {
-        cout << passwords[i] << endl;
-    }
-}
 
 int main() {
     setlocale(LC_CTYPE, "ukr"); // Set the locale to Ukrainian (this is for character encoding)
@@ -40,7 +23,7 @@ int main() {
 
         switch (choice) {
         case 1:
-            cout << "Enter filename to input passwords from: ";
+            cout << "Please enter the filename (including .txt extension) to load passwords from: ";
             cin >> filename;
             password = password_input(filename);
             cout << "Passwords loaded." << endl;
@@ -76,6 +59,11 @@ int main() {
             break;
 
         case 7:
+            cout << "Displaying password:" << endl;
+            display_password(password, names);
+            break;
+
+        case 8:
             cout << "Exiting program." << endl;
             return 0;
 
