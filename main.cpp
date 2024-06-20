@@ -54,7 +54,7 @@ int main() {
             break;
 
         case 6:
-            cout << "Displaying passwords:" << endl;
+            cout << "Displaying all of passwords:" << endl;
             display_passwords(password);
             break;
 
