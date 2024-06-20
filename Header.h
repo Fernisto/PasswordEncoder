@@ -116,8 +116,9 @@ void save_encoded(std::vector<std::string>& password) {
     }
 }
 
+
 // Function to read encoded passwords from a file
-void read_encoded(std::vector<std::string>& password) {
+void read_encoded(std::vector<std::string>& password, std::vector<std::string>& names) {
     std::ifstream data;
     data.open("passwords_encoded.txt");
     if (data.is_open()) {
@@ -125,7 +126,13 @@ void read_encoded(std::vector<std::string>& password) {
         std::string str;
         // Read each line from the file into the password vector
         while (std::getline(data, str)) {
+            // Check if the string starts and ends with an asterisk '*'
+            if (str.front() == '*' && str.back() == '*' && str.length() > 1) {
+                names.push_back(str);
+            }
             password.push_back(str);
+            
+
         }
         data.close();
         std::cout << "Data read successfully" << std::endl << std::endl;
@@ -134,6 +141,9 @@ void read_encoded(std::vector<std::string>& password) {
         std::cout << "Error: Unable to open file for reading" << std::endl;
     }
 }
+
+
+
 
 // Function to read passwords from a specified file into a vector
 std::vector<std::string> password_input(const std::string& filename) {
