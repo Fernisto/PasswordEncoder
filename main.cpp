@@ -23,9 +23,10 @@ int main() {
 
         switch (choice) {
         case 1:
+            password.clear();
             cout << "Please enter the filename (including .txt extension) to load passwords from: ";
             cin >> filename;
-            password = password_input(filename);
+            password = password_input(filename,names);
             cout << "Passwords loaded." << endl;
             break;
 
@@ -49,6 +50,7 @@ int main() {
 
         case 5:
             cout << "Reading encoded passwords from file..." << endl;
+            password.clear();
             read_encoded(password, names);
             cout << "Encoded passwords read." << endl;
             break;

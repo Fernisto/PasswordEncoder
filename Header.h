@@ -146,7 +146,7 @@ void read_encoded(std::vector<std::string>& password, std::vector<std::string>& 
 
 
 // Function to read passwords from a specified file into a vector
-std::vector<std::string> password_input(const std::string& filename) {
+std::vector<std::string> password_input(const std::string& filename, std::vector<std::string>& names) {
     std::vector<std::string> text;
     std::ifstream data(filename);
     if (data.is_open()) {
@@ -154,6 +154,10 @@ std::vector<std::string> password_input(const std::string& filename) {
         std::string str;
         // Read each line from the file into the text vector
         while (std::getline(data, str)) {
+            // Check if the string starts and ends with an asterisk '*'
+            if (str.front() == '*' && str.back() == '*' && str.length() > 1) {
+                names.push_back(str);
+            }
             text.push_back(str);
         }
         data.close();
@@ -167,13 +171,13 @@ std::vector<std::string> password_input(const std::string& filename) {
 
 void display_menu() {
     std::cout << "Password Manager Menu:" << std::endl;
-    std::cout << "1. Input passwords from file" << std::endl;
+    std::cout << "1. Input passwords from a file (if you want to display the password, you need to encode them first; it also works with already encoded files)." << std::endl;
     std::cout << "2. Encode passwords" << std::endl;
     std::cout << "3. Decode passwords" << std::endl;
     std::cout << "4. Save encoded passwords to file" << std::endl;
     std::cout << "5. Read encoded passwords from file" << std::endl;
     std::cout << "6. Display all of passwords" << std::endl;
-    std::cout << "7. Display password" << std::endl;
+    std::cout << "7. Display password by name(Encoded only)" << std::endl;
     std::cout << "8. Exit" << std::endl;
     std::cout << "Enter your choice: ";
 }
