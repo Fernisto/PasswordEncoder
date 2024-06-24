@@ -18,6 +18,7 @@ char symbols[] = {
 
 // Function to encode passwords using rotation cipher
 void Encoder(std::vector<std::string>& password) {
+    std::string str;
     for (size_t j = 0; j < password.size(); ++j) {
         size_t length = password[j].length();
         for (size_t i = 0; i < length; ++i) {
@@ -55,6 +56,7 @@ void Encoder(std::vector<std::string>& password) {
             }
         }
     }
+
 }
 
 // Function to decode passwords back from the encoded form
